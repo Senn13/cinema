@@ -39,7 +39,7 @@ class MovieModel extends MovieEntity {
           title: title,
           backdropPath: backdropPath, // Pass as non-nullable
           posterPath: posterPath, // Pass as non-nullable
-          releaseDate: releaseDate ?? 'Unknown',
+          releaseDate: releaseDate,
           voteAverage: voteAverage,
           overview: overview,
         );
@@ -65,7 +65,10 @@ class MovieModel extends MovieEntity {
   }
 
   toJson() {}
+
+  static fromEntity(MovieEntity entity) {}
 }
+
 
 
 
