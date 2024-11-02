@@ -2,8 +2,11 @@ import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
 import 'package:cinema/common/screenutil/screenutil.dart';
 import 'package:cinema/domain/entities/movie_entity.dart';
+import 'package:cinema/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
+import 'package:cinema/presentation/journeys/home/movie_carousel/animated_movie_card_widget.dart';
 import 'package:cinema/presentation/journeys/home/movie_carousel/movie_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoviePageView extends StatefulWidget {
   final List<MovieEntity> movies;
@@ -48,7 +51,9 @@ class _MoviePageViewState extends State<MoviePageView> {
         controller: _pageController,
         itemBuilder: (context, index) {
           final MovieEntity movie = widget.movies[index];
-          return MovieCardWidget(
+          return AnimatedMovieCardWidget(
+            index: index,
+            pageController: _pageController,
             key: ValueKey(movie.id),
             movieId: movie.id, 
             posterPath: movie.posterPath, 
@@ -58,6 +63,8 @@ class _MoviePageViewState extends State<MoviePageView> {
         pageSnapping: true,
         itemCount: widget.movies.length ?? 0,
         onPageChanged: (index) {
+          BlocProvider.of<MovieBackdropBloc>(context)
+            .add(MovieBackdropChangedEvent(widget.movies[index]));
         },
       ),
     );

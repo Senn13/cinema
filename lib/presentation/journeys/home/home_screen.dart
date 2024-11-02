@@ -1,6 +1,9 @@
 import 'package:cinema/di/get_it.dart';
+import 'package:cinema/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
+import 'package:cinema/presentation/blocs/movie_tabbed/movie_tabbed_bloc.dart';
 import 'package:cinema/presentation/journeys/home/movie_carousel/movie_carousel_widget.dart';
+import 'package:cinema/presentation/journeys/home/movie_tabbed/movie_tabbed_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,31 +14,40 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MovieCarouselBloc movieCarouselBloc;
+  late MovieBackdropBloc movieBackdropBloc;
+  late MovieTabbedBloc movieTabbedBloc;
 
   @override
   void initState() {
     super.initState();
-    movieCarouselBloc = getItInstance<MovieCarouselBloc>(); // Ensure DI is working correctly
-    movieCarouselBloc.add(CarouselLoadEvent()); // Dispatch the event to load the carousel
+    movieCarouselBloc = getItInstance<MovieCarouselBloc>();
+    movieBackdropBloc = movieCarouselBloc.movieBackdropBloc;
+    movieTabbedBloc   = getItInstance<MovieTabbedBloc>();
+    movieCarouselBloc.add(CarouselLoadEvent()); 
   }
 
   @override
   void dispose() {
     movieCarouselBloc.close();
+    movieBackdropBloc.close();
+    movieTabbedBloc.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MovieCarouselBloc>(
-      create: (context) => movieCarouselBloc,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => movieCarouselBloc,),
+        BlocProvider(create: (context) => movieBackdropBloc,),
+        BlocProvider(create: (context) => movieTabbedBloc,),
+      ],
       child: Scaffold(
         body: BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
           bloc: movieCarouselBloc,
           builder: (context, state) {
             if (state is MovieCarouselLoaded) {
               print('Loaded');
-              // Trạng thái dữ liệu đã được tải
               return Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
@@ -50,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   FractionallySizedBox(
                     alignment: Alignment.bottomCenter,
                     heightFactor: 0.4,
-                    child: Placeholder(color: Colors.white),
+                    child: MovieTabbedWidget(),
                   ),
                 ],
               );
