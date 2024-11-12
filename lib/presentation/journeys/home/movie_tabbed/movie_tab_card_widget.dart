@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
+import 'package:cinema/common/extensions/string_extensions.dart';
 import 'package:cinema/data/core/api_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class MovieTabCardWidget extends StatelessWidget{
           Padding(
             padding: EdgeInsets.only(top: Sizes.dimen_4.h.toDouble()),
             child: Text(
-              title,
+              title.intelliTrim(),
               maxLines: 1,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,

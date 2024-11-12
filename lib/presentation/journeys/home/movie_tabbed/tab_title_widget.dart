@@ -1,5 +1,6 @@
 import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
+import 'package:cinema/presentation/app_localizations.dart';
 import 'package:cinema/presentation/theme/theme_color.dart';
 import 'package:cinema/presentation/theme/theme_text.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,7 @@ class TabTitleWidget extends StatelessWidget{
           ),
         ),
         child: Text(
-          title,
+          AppLocalizations.of(context)?.translate(title) ?? 'Default Title',
           style: isSelected
               ? Theme.of(context).textTheme.royalBlueSubtitle1
               : Theme.of(context).textTheme.titleMedium,
