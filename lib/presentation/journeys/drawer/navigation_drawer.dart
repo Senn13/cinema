@@ -2,11 +2,15 @@ import 'package:cinema/common/constants/languages.dart';
 import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/constants/translation_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
-import 'package:cinema/presentation/app_localizations.dart';
+import 'package:cinema/common/extensions/string_extensions.dart';
+import 'package:cinema/presentation/blocs/language/language_bloc.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_expanded_list_item.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_list_item.dart';
+import 'package:cinema/presentation/widgets/app_dialog.dart';
 import 'package:cinema/presentation/widgets/logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wiredash/wiredash.dart';
 
 class NavigationDrawer extends StatelessWidget{
   const NavigationDrawer({super.key});
@@ -39,25 +43,31 @@ class NavigationDrawer extends StatelessWidget{
               )
             ),
             NavigationListItem(
-              title: AppLocalizations.of(context)
-                  ?.translate(TranslationConstants.favoriteMovies) ?? 'Default Title',
+              title: TranslationConstants.favoriteMovies.t(context) ,
               onPressed: () {},
             ),
             NavigationExpandedListItem(
-              title: AppLocalizations.of(context)
-                  ?.translate(TranslationConstants.language) ?? 'Default Language',
-              onPressed: () {},
+              title: TranslationConstants.language.t(context),
               children: Languages.languages.map((e) => e.value).toList(),
+              onPressed: (index) {
+                BlocProvider.of<LanguageBloc>(context).add(
+                  ToggleLanguageEvent(Languages.languages[index]),
+                );
+              },
             ),
             NavigationListItem(
-              title: AppLocalizations.of(context)
-                  ?.translate(TranslationConstants.feedback) ?? 'Default Feedback',
-              onPressed: () {},
+              title: TranslationConstants.feedback.t(context),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Wiredash.of(context).show();
+              },
             ),
             NavigationListItem(
-              title: AppLocalizations.of(context)
-                  ?.translate(TranslationConstants.about) ?? 'Default About',
-              onPressed: () {},
+              title: TranslationConstants.about.t(context),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showDialog(context);
+              },
             ),
           ],
         )
@@ -65,3 +75,23 @@ class NavigationDrawer extends StatelessWidget{
     );
   }
 }
+
+void _showDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AppDialog(
+        title: TranslationConstants.about,
+        description: TranslationConstants.aboutDescription,
+        buttonText: TranslationConstants.okay,
+        image: Image.asset(
+          'assets/pngs/tmdb_logo.png',
+          height: Sizes.dimen_32.h.toDouble(),
+        ),
+      );
+    },
+  );
+}
+
+
+

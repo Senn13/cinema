@@ -63,7 +63,7 @@ class NavigationSubListItem extends StatelessWidget{
         contentPadding: EdgeInsets.symmetric(horizontal: Sizes.dimen_32.w.toDouble()),
         title: Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleSmall,
         )
       )
       )

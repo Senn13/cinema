@@ -39,11 +39,21 @@ class MovieTabbedBloc extends Bloc<MovieTabbedEvent, MovieTabbedState> {
           moviesEither = await getComingSoon(NoParams());
           break;
         default:
-          moviesEither = Left(AppError('Invalid Tab Index'));
+          moviesEither = Left(AppError(AppErrorType.network));
           break;
       }
+
+      // yield MovieTabLoadError(
+      //   currentTabIndex: event.currentTabIndex,
+      //   errorType: AppErrorType.network,
+      // );
+      // Error Handling TabChanged
+
       yield moviesEither.fold(
-        (l) => MovieTabLoadError(currentTabIndex: event.currentTabIndex),
+        (l) => MovieTabLoadError(
+          currentTabIndex: event.currentTabIndex,
+          errorType: l.appErrorType,
+        ),
         (movies) {
           return MovieTabChanged(
             currentTabIndex: event.currentTabIndex,

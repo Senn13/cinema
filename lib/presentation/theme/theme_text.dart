@@ -10,12 +10,26 @@ class ThemeText {
   static TextTheme get _poppinsTextTheme => GoogleFonts.poppinsTextTheme();
 
   static TextStyle? get _whiteHeadlineSmall => _poppinsTextTheme.headlineSmall?.copyWith(
-        fontSize: Sizes.dimen_20.sp.toDouble(),
+        fontSize: Sizes.dimen_18.sp.toDouble(),
+        color: Colors.white,
+      );
+  static TextStyle? get _whiteHeadlineMedium => _poppinsTextTheme.headlineSmall?.copyWith(
+        fontSize: Sizes.dimen_24.sp.toDouble(),
+        color: Colors.white,
+      );
+
+  static TextStyle? get _whiteSubtitle2 => _poppinsTextTheme.titleSmall?.copyWith(
+        fontSize: Sizes.dimen_16.sp.toDouble(),
         color: Colors.white,
       );
 
   static TextStyle? get whiteSubtitle1 => _poppinsTextTheme.titleMedium?.copyWith(
-    fontSize: Sizes.dimen_16.sp.toDouble(),
+    fontSize: Sizes.dimen_20.sp.toDouble(),
+    color: Colors.white,
+  );
+
+  static TextStyle? get _whiteButton => _poppinsTextTheme.labelLarge?.copyWith(
+    fontSize: Sizes.dimen_14.sp.toDouble(),
     color: Colors.white,
   );
 
@@ -29,8 +43,11 @@ class ThemeText {
 
   static getTextTheme() => TextTheme(
         headlineSmall: _whiteHeadlineSmall,
+        headlineMedium: _whiteHeadlineMedium,
         titleMedium: whiteSubtitle1,
         bodyMedium: whiteBodyText2,
+        labelLarge: _whiteButton,
+        titleSmall: _whiteSubtitle2,
   );
 }
 
