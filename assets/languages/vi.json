@@ -11,5 +11,6 @@
     "okay": "Đồng ý",
     "aboutDescription": "Sản phẩm này sử dụng API TMDb nhưng không được TMDb xác nhận hoặc chứng nhận. Ứng dụng này được phát triển cho mục đích giáo dục.",
     "checkNetwork": "Vui lòng kiểm tra kết nối mạng của bạn và nhấn nút Thử lại hoặc báo lỗi bằng cách nhấn nút Phản hồi.",
-    "noMovies": "Xin lỗi, không có phim nào trong mục này"
+    "noMovies": "Xin lỗi, không có phim nào trong mục này",
+    "cast": "Diễn viên"
 }

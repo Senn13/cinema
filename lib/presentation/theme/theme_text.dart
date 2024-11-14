@@ -10,11 +10,16 @@ class ThemeText {
   static TextTheme get _poppinsTextTheme => GoogleFonts.poppinsTextTheme();
 
   static TextStyle? get _whiteHeadlineSmall => _poppinsTextTheme.headlineSmall?.copyWith(
-        fontSize: Sizes.dimen_18.sp.toDouble(),
+        fontSize: Sizes.dimen_20.sp.toDouble(),
         color: Colors.white,
       );
-  static TextStyle? get _whiteHeadlineMedium => _poppinsTextTheme.headlineSmall?.copyWith(
+  static TextStyle? get _whiteHeadlineMedium => _poppinsTextTheme.headlineMedium?.copyWith(
         fontSize: Sizes.dimen_24.sp.toDouble(),
+        color: Colors.white,
+      );
+
+  static TextStyle? get _whiteHeadlineLarge => _poppinsTextTheme.headlineLarge?.copyWith(
+        fontSize: Sizes.dimen_32.sp.toDouble(),
         color: Colors.white,
       );
 
@@ -44,6 +49,7 @@ class ThemeText {
   static getTextTheme() => TextTheme(
         headlineSmall: _whiteHeadlineSmall,
         headlineMedium: _whiteHeadlineMedium,
+        headlineLarge: _whiteHeadlineLarge,
         titleMedium: whiteSubtitle1,
         bodyMedium: whiteBodyText2,
         labelLarge: _whiteButton,
@@ -54,6 +60,19 @@ class ThemeText {
 extension ThemeTextExtension on TextTheme {
   TextStyle? get royalBlueSubtitle1 => titleMedium?.copyWith(
     color: AppColor.royalBlue,
+    fontWeight: FontWeight.w600,
+  );
+
+  TextStyle? get greySubtitle1 => bodyMedium?.copyWith(
+    color: Colors.grey,
+  );
+
+  TextStyle? get violetHeadline6 => headlineMedium?.copyWith(
+    color: AppColor.violet,
+  );
+
+  TextStyle? get vulcanBodyText2 => bodyMedium?.copyWith(
+    color: AppColor.vulcan,
     fontWeight: FontWeight.w600,
   );
 }
