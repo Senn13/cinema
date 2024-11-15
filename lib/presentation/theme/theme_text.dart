@@ -38,6 +38,11 @@ class ThemeText {
     color: Colors.white,
   );
 
+  static TextStyle? get whiteBodyText3 => _poppinsTextTheme.bodyLarge?.copyWith(
+    fontSize: Sizes.dimen_14.sp.toDouble(),
+    color: Colors.white,
+  );
+
   static TextStyle? get whiteBodyText2 => _poppinsTextTheme.bodyMedium?.copyWith(
     color: Colors.white,
     fontSize: Sizes.dimen_14.sp.toDouble(),
@@ -54,6 +59,7 @@ class ThemeText {
         bodyMedium: whiteBodyText2,
         labelLarge: _whiteButton,
         titleSmall: _whiteSubtitle2,
+        bodyLarge: whiteBodyText3,
   );
 }
 
@@ -63,7 +69,7 @@ extension ThemeTextExtension on TextTheme {
     fontWeight: FontWeight.w600,
   );
 
-  TextStyle? get greySubtitle1 => bodyMedium?.copyWith(
+  TextStyle? get greySubtitle1 => bodyLarge?.copyWith(
     color: Colors.grey,
   );
 
@@ -73,6 +79,17 @@ extension ThemeTextExtension on TextTheme {
 
   TextStyle? get vulcanBodyText2 => bodyMedium?.copyWith(
     color: AppColor.vulcan,
+    fontWeight: FontWeight.w600,
+  );
+
+  TextStyle? get vulcanBodyText3 => bodySmall?.copyWith(
+    fontSize: Sizes.dimen_18.sp.toDouble(),
+    color: AppColor.vulcan,
+    fontWeight: FontWeight.w600,
+  );
+
+  TextStyle? get caption => bodySmall?.copyWith(
+    color: Colors.grey,
     fontWeight: FontWeight.w600,
   );
 }

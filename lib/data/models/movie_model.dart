@@ -3,36 +3,36 @@ import 'package:cinema/domain/entities/movie_entity.dart';
 
 class MovieModel extends MovieEntity {
   final int id;
-  final bool video;
-  final int voteCount;
+  final bool? video;
+  final int? voteCount;
   final double voteAverage;
   final String title;
   final String releaseDate; // Nullable
-  final String originalLanguage;
-  final String originalTitle;
-  final List<int> genreIds;
+  final String? originalLanguage;
+  final String? originalTitle;
+  final List<int>? genreIds;
   final String backdropPath; // Make non-nullable
-  final bool adult;
+  final bool? adult;
   final String overview;
   final String posterPath; // Make non-nullable
-  final double popularity;
+  final double? popularity;
   final String? mediaType; // Nullable
 
   MovieModel({
     required this.id,
-    required this.video,
-    required this.voteCount,
+    this.video,
+    this.voteCount,
     required this.voteAverage,
     required this.title,
     required this.releaseDate,
-    required this.originalLanguage,
-    required this.originalTitle,
-    required this.genreIds,
-    required this.backdropPath, // Non-nullable
-    required this.adult,
+    this.originalLanguage,
+    this.originalTitle,
+    this.genreIds,
+    required this.backdropPath,
+    this.adult,
     required this.overview,
-    required this.posterPath, // Non-nullable
-    required this.popularity,
+    required this.posterPath,
+    this.popularity,
     this.mediaType,
   }) : super(
           id: id,

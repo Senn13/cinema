@@ -45,6 +45,7 @@ class _MovieAppState extends State<MovieApp> {
                 debugShowCheckedModeBanner: false,
                 title: 'Movie App',
                 theme: ThemeData(
+                  unselectedWidgetColor: AppColor.royalBlue,
                   primaryColor: AppColor.vulcan,
                   accentColor: AppColor.royalBlue,
                   scaffoldBackgroundColor: AppColor.vulcan,
@@ -52,6 +53,7 @@ class _MovieAppState extends State<MovieApp> {
                   textTheme: ThemeText.getTextTheme(),
                   appBarTheme: const AppBarTheme(elevation: 0),
                 ),
+
                 supportedLocales: Languages.languages.map((e) => Locale(e.code)).toList(),
                 locale: state.locale,
                 localizationsDelegates: [

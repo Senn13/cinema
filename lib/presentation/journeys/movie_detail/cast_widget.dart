@@ -60,7 +60,7 @@ class CastWidget extends StatelessWidget {
                             castEntity.name,
                             overflow: TextOverflow.fade,
                             maxLines: 1,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.vulcanBodyText2,
                           ),
                         ),
                         Padding(
@@ -73,7 +73,7 @@ class CastWidget extends StatelessWidget {
                             castEntity.character,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Theme.of(context).textTheme.caption,
                           ),
                         ),
                       ],

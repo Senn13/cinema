@@ -1,58 +1,58 @@
 import '../../domain/entities/movie_detail_entity.dart';
 
 class MovieDetailModel extends MovieDetailEntity {
-  final bool adult;
+  final bool? adult;
   final String backdropPath;
   final BelongsToCollection? belongsToCollection;
-  final int budget;
-  final List<Genres> genres;
-  final String homepage;
+  final int? budget;
+  final List<Genres>? genres;
+  final String? homepage;
   final int id;
-  final String imdbId;
-  final String originalLanguage;
-  final String originalTitle;
+  final String? imdbId;
+  final String? originalLanguage;
+  final String? originalTitle;
   final String overview;
-  final double popularity;
+  final double? popularity;
   final String posterPath;
   final List<ProductionCompanies>? productionCompanies;
   final List<ProductionCountries>? productionCountries;
   final String releaseDate;
-  final int revenue;
-  final int runtime;
+  final int? revenue;
+  final int? runtime;
   final List<SpokenLanguages>? spokenLanguages;
-  final String status;
-  final String tagline;
+  final String? status;
+  final String? tagline;
   final String title;
-  final bool video;
+  final bool? video;
   final num voteAverage;
-  final int voteCount;
+  final int? voteCount;
 
   MovieDetailModel({
-      required this.adult,
+      this.adult,
       required this.backdropPath,
       this.belongsToCollection,
-      required this.budget,
-      required this.genres,
-      required this.homepage,
+      this.budget,
+      this.genres,
+      this.homepage,
       required this.id,
-      required this.imdbId,
-      required this.originalLanguage,
-      required this.originalTitle,
+      this.imdbId,
+      this.originalLanguage,
+      this.originalTitle,
       required this.overview,
-      required this.popularity,
+      this.popularity,
       required this.posterPath,
       this.productionCompanies,
       this.productionCountries,
       required this.releaseDate,
-      required this.revenue,
-      required this.runtime,
+      this.revenue,
+      this.runtime,
       this.spokenLanguages,
-      required this.status,
-      required this.tagline,
+      this.status,
+      this.tagline,
       required this.title,
-      required this.video,
+      this.video,
       required this.voteAverage,
-      required this.voteCount})
+      this.voteCount})
       : super (
           id: id,
           title: title,
@@ -104,7 +104,7 @@ class MovieDetailModel extends MovieDetailEntity {
     }
     data['budget'] = this.budget;
     if (this.genres != null) {
-      data['genres'] = this.genres.map((v) => v.toJson()).toList();
+      data['genres'] = this.genres?.map((v) => v.toJson()).toList();
     }
     data['homepage'] = this.homepage;
     data['id'] = this.id;

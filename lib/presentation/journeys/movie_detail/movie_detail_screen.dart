@@ -5,9 +5,11 @@ import 'package:cinema/common/extensions/string_extensions.dart';
 import 'package:cinema/di/get_it.dart';
 import 'package:cinema/presentation/blocs/cast/cast_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_detail/movie_detail_bloc.dart';
+import 'package:cinema/presentation/blocs/videos/videos_bloc.dart';
 import 'package:cinema/presentation/journeys/movie_detail/big_poster.dart';
 import 'package:cinema/presentation/journeys/movie_detail/cast_widget.dart';
 import 'package:cinema/presentation/journeys/movie_detail/movie_detail_arguments.dart';
+import 'package:cinema/presentation/journeys/movie_detail/videos_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,14 +29,14 @@ class MovieDetailScreen extends StatefulWidget {
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
   late MovieDetailBloc _movieDetailBloc;
   late CastBloc _castBloc;
-  // VideosBloc _videosBloc;
+  late VideosBloc _videosBloc;
 
   @override
   void initState() {
     super.initState();
     _movieDetailBloc = getItInstance<MovieDetailBloc>();
     _castBloc = _movieDetailBloc.castBloc;
-    // _videosBloc = _movieDetailBloc.videosBloc;
+    _videosBloc = _movieDetailBloc.videosBloc;
     _movieDetailBloc.add(
       MovieDetailLoadEvent(
         widget.movieDetailArguments.movieId,
@@ -46,7 +48,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   void dispose() {
     _movieDetailBloc?.close();
     _castBloc?.close();
-    // _videosBloc?.close();
+    _videosBloc?.close();
     super.dispose();
   }
 
@@ -57,7 +59,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
         providers: [
           BlocProvider.value(value: _movieDetailBloc),
           BlocProvider.value(value: _castBloc),
-          // BlocProvider.value(value: _videosBloc),
+          BlocProvider.value(value: _videosBloc),
         ],
         child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
           builder: (context, state) {
@@ -86,11 +88,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           EdgeInsets.symmetric(horizontal: Sizes.dimen_16.w.toDouble()),
                       child: Text(
                         TranslationConstants.cast.t(context),
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
                     CastWidget(),
-                    // VideosWidget(videosBloc: _videosBloc),
+                    VideosWidget(videosBloc: _videosBloc),
                   ],
                 ),
               );

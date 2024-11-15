@@ -9,34 +9,25 @@ class CastCrewResultModel {
 
   CastCrewResultModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    
-    if (json['cast'] != null) {
-      cast = <CastModel>[];  // Use the correct list constructor syntax
-      json['cast'].forEach((v) {
-        cast?.add(CastModel.fromJson(v));  // Add CastModel instances
-      });
-    }
-    
-    if (json['crew'] != null) {
-      crew = <Crew>[];  // Use the correct list constructor syntax
-      json['crew'].forEach((v) {
-        crew?.add(Crew.fromJson(v));  // Add Crew instances
-      });
-    }
-}
 
+    if (json['cast'] != null && json['cast'] is List) {
+      cast = (json['cast'] as List)
+          .map((v) => CastModel.fromJson(v))
+          .toList();
+    }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    if (this.cast != null) {
-      data['cast'] = this.cast?.map((v) => v.toJson()).toList();
+    if (json['crew'] != null && json['crew'] is List) {
+      crew = (json['crew'] as List)
+          .map((v) => Crew.fromJson(v))
+          .toList();
     }
-    if (this.crew != null) {
-      data['crew'] = this.crew?.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'cast': cast?.map((v) => v.toJson()).toList(),
+        'crew': crew?.map((v) => v.toJson()).toList(),
+      };
 }
 
 class CastModel extends CastEntity {
@@ -68,67 +59,66 @@ class CastModel extends CastEntity {
   factory CastModel.fromJson(Map<String, dynamic> json) {
     return CastModel(
       castId: json['cast_id'],
-      character: json['character'],
-      creditId: json['credit_id'],
+      character: json['character'] ?? '',
+      creditId: json['credit_id'] ?? '',
       gender: json['gender'],
       id: json['id'],
-      name: json['name'],
+      name: json['name'] ?? '',
       order: json['order'],
-      profilePath: json['profile_path'],
+      profilePath: json['profile_path'] ?? '',
     );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['cast_id'] = this.castId;
-    data['character'] = this.character;
-    data['credit_id'] = this.creditId;
-    data['gender'] = this.gender;
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['order'] = this.order;
-    data['profile_path'] = this.profilePath;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'cast_id': castId,
+        'character': character,
+        'credit_id': creditId,
+        'gender': gender,
+        'id': id,
+        'name': name,
+        'order': order,
+        'profile_path': profilePath,
+      };
 }
 
 class Crew {
-  String? creditId;
-  String? department;
-  int? gender;
-  int? id;
-  String? job;
-  String? name;
-  String? profilePath;
+  final String creditId;
+  final String department;
+  final int? gender;
+  final int? id;
+  final String job;
+  final String name;
+  final String profilePath;
 
-  Crew(
-      {this.creditId,
-      this.department,
-      this.gender,
-      this.id,
-      this.job,
-      this.name,
-      this.profilePath});
+  Crew({
+    required this.creditId,
+    required this.department,
+    this.gender,
+    this.id,
+    required this.job,
+    required this.name,
+    required this.profilePath,
+  });
 
-  Crew.fromJson(Map<String, dynamic> json) {
-    creditId = json['credit_id'];
-    department = json['department'];
-    gender = json['gender'];
-    id = json['id'];
-    job = json['job'];
-    name = json['name'];
-    profilePath = json['profile_path'];
+  factory Crew.fromJson(Map<String, dynamic> json) {
+    return Crew(
+      creditId: json['credit_id'] ?? '',
+      department: json['department'] ?? '',
+      gender: json['gender'],
+      id: json['id'],
+      job: json['job'] ?? '',
+      name: json['name'] ?? '',
+      profilePath: json['profile_path'] ?? '',
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['credit_id'] = this.creditId;
-    data['department'] = this.department;
-    data['gender'] = this.gender;
-    data['id'] = this.id;
-    data['job'] = this.job;
-    data['name'] = this.name;
-    data['profile_path'] = this.profilePath;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'credit_id': creditId,
+        'department': department,
+        'gender': gender,
+        'id': id,
+        'job': job,
+        'name': name,
+        'profile_path': profilePath,
+      };
 }
