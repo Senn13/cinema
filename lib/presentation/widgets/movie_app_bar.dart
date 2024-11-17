@@ -31,7 +31,7 @@ class MovieAppBar extends StatelessWidget {
           Expanded(
             child: Logo(
               height: Sizes.dimen_14,
-              key: UniqueKey(), // Replace null with a unique key
+              key: UniqueKey(),
             ),
           ),
 

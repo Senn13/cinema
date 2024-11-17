@@ -23,6 +23,7 @@ class _MovieAppState extends State<MovieApp> {
   void initState() {
     super.initState();
     _languageBloc = getItInstance<LanguageBloc>();
+    _languageBloc.add(LoadPreferredLanguageEvent());
   }
 
   @override
@@ -51,7 +52,12 @@ class _MovieAppState extends State<MovieApp> {
                   scaffoldBackgroundColor: AppColor.vulcan,
                   visualDensity: VisualDensity.adaptivePlatformDensity,
                   textTheme: ThemeText.getTextTheme(),
-                  appBarTheme: const AppBarTheme(elevation: 0),
+                  appBarTheme: const AppBarTheme(
+                    backgroundColor: AppColor.vulcan,
+                    elevation: 0,
+                    iconTheme: IconThemeData(color: Colors.white,
+                    )
+                  ),
                 ),
 
                 supportedLocales: Languages.languages.map((e) => Locale(e.code)).toList(),

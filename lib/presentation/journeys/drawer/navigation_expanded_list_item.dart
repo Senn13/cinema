@@ -27,7 +27,7 @@ class NavigationExpandedListItem extends StatelessWidget {
       child: ExpansionTile(
         title: Text(
           title,
-          style: Theme.of(context).textTheme.titleMedium,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         children: [
           for (int i = 0; i < children.length; i++)

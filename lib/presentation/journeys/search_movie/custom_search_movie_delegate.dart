@@ -18,8 +18,24 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   ThemeData appBarTheme(BuildContext context) {
     return Theme.of(context).copyWith(
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColor.vulcan,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      ),
+      textTheme: Theme.of(context).textTheme.copyWith(
+            titleLarge: TextStyle(
+              color: Colors.white,
+            ),
+          ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: Theme.of(context).textTheme.vulcanBodyText3,
+        hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Colors.grey,
+            ),
+      ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: AppColor.royalBlue,
       ),
     );
   }
@@ -30,7 +46,7 @@ class CustomSearchDelegate extends SearchDelegate {
       IconButton(
         icon: Icon(
           Icons.clear,
-          color: query.isEmpty ? Colors.black : AppColor.vulcan,
+          color: query.isEmpty ? Colors.grey : AppColor.royalBlue,
         ),
         onPressed: query.isEmpty ? null : () => query = '',
       ),
@@ -45,7 +61,7 @@ class CustomSearchDelegate extends SearchDelegate {
       },
       child: Icon(
         Icons.arrow_back_ios,
-        color: Colors.black,
+        color: Colors.white,
         size: Sizes.dimen_12.h.toDouble(),
       ),
     );
@@ -71,7 +87,8 @@ class CustomSearchDelegate extends SearchDelegate {
           if (movies.isEmpty) {
             return Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: Sizes.dimen_64.w.toDouble()),
+                padding: EdgeInsets.symmetric(
+                    horizontal: Sizes.dimen_64.w.toDouble()),
                 child: Text(
                   TranslationConstants.noMoviesSearched.t(context),
                   textAlign: TextAlign.center,

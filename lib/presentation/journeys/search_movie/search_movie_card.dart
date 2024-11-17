@@ -56,7 +56,7 @@ class SearchMovieCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Text(
-                    movie.overview,
+                    movie.overview ?? 'No overview available',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.caption,

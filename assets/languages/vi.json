@@ -14,5 +14,6 @@
     "noMovies": "Xin lỗi, không có phim nào trong mục này",
     "cast": "Diễn viên",
     "watchTrailers": "Xem Trailers",
-    "noMoviesSearched": "Không tìm thấy phim, vui lòng tìm kiếm bằng từ khác"
+    "noMoviesSearched": "Không tìm thấy phim, vui lòng tìm kiếm bằng từ khác",
+    "noFavoriteMovie": "Không có phim nào được ưa thích"
 }
