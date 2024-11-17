@@ -92,5 +92,10 @@ extension ThemeTextExtension on TextTheme {
     color: Colors.grey,
     fontWeight: FontWeight.w600,
   );
+
+  TextStyle? get orangeSubtitle1 => titleSmall?.copyWith(
+        color: Colors.orangeAccent,
+      );
+
 }
 

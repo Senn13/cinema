@@ -1,9 +1,11 @@
 import 'package:cinema/common/constants/languages.dart';
+import 'package:cinema/common/constants/route_constants.dart';
 import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/constants/translation_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
 import 'package:cinema/common/extensions/string_extensions.dart';
 import 'package:cinema/presentation/blocs/language/language_bloc.dart';
+import 'package:cinema/presentation/blocs/login/login_bloc.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_expanded_list_item.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_list_item.dart';
 import 'package:cinema/presentation/journeys/favorite/favorite_screen.dart';
@@ -46,11 +48,7 @@ class NavigationDrawer extends StatelessWidget{
             NavigationListItem(
               title: TranslationConstants.favoriteMovies.t(context) ,
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FavoriteScreen(),
-                    ),
-                  );
+                Navigator.of(context).pushNamed(RouteList.favorite);
               },
             ),
             NavigationExpandedListItem(
@@ -75,6 +73,19 @@ class NavigationDrawer extends StatelessWidget{
                 Navigator.of(context).pop();
                 _showDialog(context);
               },
+            ),
+            BlocListener<LoginBloc, LoginState>(
+              listenWhen: (previous, current) => current is LogoutSuccess,
+              listener: (context, state) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteList.initial, (route) => false);
+              },
+              child: NavigationListItem(
+                title: TranslationConstants.logout.t(context),
+                onPressed: () {
+                  BlocProvider.of<LoginBloc>(context).add(LogoutEvent());
+                },
+              ),
             ),
           ],
         )

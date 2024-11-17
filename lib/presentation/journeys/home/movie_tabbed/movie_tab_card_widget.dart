@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cinema/common/constants/route_constants.dart';
 import 'package:cinema/common/constants/size_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
 import 'package:cinema/common/extensions/string_extensions.dart';
@@ -22,12 +23,8 @@ class MovieTabCardWidget extends StatelessWidget{
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MovieDetailScreen(
-                movieDetailArguments: MovieDetailArguments(movieId),
-              ),
-            ),
-          );
+        Navigator.of(context).pushNamed(RouteList.movieDetail,
+              arguments: MovieDetailArguments(movieId));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

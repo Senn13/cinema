@@ -1,3 +1,4 @@
+import 'package:cinema/common/constants/route_constants.dart';
 import 'package:cinema/common/constants/translation_constants.dart';
 import 'package:cinema/presentation/blocs/videos/videos_bloc.dart';
 import 'package:cinema/presentation/journeys/watch_video/watch_video_argruments.dart';
@@ -24,13 +25,8 @@ class VideosWidget extends StatelessWidget {
           return Button(
             text: TranslationConstants.watchTrailers,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => WatchVideoScreen(
-                    watchVideoArguments: WatchVideoArguments(_videos),
-                  ),
-                ),
-              );
+              Navigator.of(context).pushNamed(RouteList.watchTrailer);
+                    arguments: WatchVideoArguments(_videos);
             },
           );
         } else {

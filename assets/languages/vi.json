@@ -15,5 +15,15 @@
     "cast": "Diễn viên",
     "watchTrailers": "Xem Trailers",
     "noMoviesSearched": "Không tìm thấy phim, vui lòng tìm kiếm bằng từ khác",
-    "noFavoriteMovie": "Không có phim nào được ưa thích"
+    "noFavoriteMovie": "Không có phim nào được ưa thích",
+    "loginToMovieApp": "Đăng nhập vào MovieApp",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "signIn": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "wrongUsernamePassword": "Tên đăng nhập hoặc Email không tồn tại",
+    "noNetwork": "Không có kết nối mạng",
+    "sessionDenied": "Phiên bị từ chối",
+    "enterTMDbUsername": "Nhập tên đăng nhập ở đây...",
+    "enterPassword": "Nhập mật khẩu ở đây..."
 }
