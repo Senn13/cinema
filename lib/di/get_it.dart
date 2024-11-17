@@ -1,9 +1,13 @@
+import 'package:cinema/data/data_sources/authentication_local_data_source.dart';
+import 'package:cinema/data/data_sources/authentication_remote_data_source.dart';
 import 'package:cinema/data/data_sources/language_local_data_source.dart';
 import 'package:cinema/data/data_sources/movie_local_data_source.dart';
 import 'package:cinema/data/data_sources/movie_remote_data_source.dart';
 import 'package:cinema/data/repositories/app_repository_impl.dart';
+import 'package:cinema/data/repositories/authentication_repository_impl.dart';
 import 'package:cinema/data/repositories/movie_repository_impl.dart';
 import 'package:cinema/domain/repositories/app_repository.dart';
+import 'package:cinema/domain/repositories/authentication_repository.dart';
 import 'package:cinema/domain/repositories/movie_repository.dart';
 import 'package:cinema/domain/usecases/check_if_movie_favorite.dart';
 import 'package:cinema/domain/usecases/delete_favorite_movie.dart';
@@ -16,12 +20,15 @@ import 'package:cinema/domain/usecases/get_popular.dart';
 import 'package:cinema/domain/usecases/get_preferred_language.dart';
 import 'package:cinema/domain/usecases/get_trending.dart';
 import 'package:cinema/domain/usecases/get_videos.dart';
+import 'package:cinema/domain/usecases/login_user.dart';
+import 'package:cinema/domain/usecases/logout_user.dart';
 import 'package:cinema/domain/usecases/save_movie.dart';
 import 'package:cinema/domain/usecases/search_movies.dart';
 import 'package:cinema/domain/usecases/update_language.dart';
 import 'package:cinema/presentation/blocs/cast/cast_bloc.dart';
 import 'package:cinema/presentation/blocs/favorite/favorite_bloc.dart';
 import 'package:cinema/presentation/blocs/language/language_bloc.dart';
+import 'package:cinema/presentation/blocs/login/login_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_backdrop/movie_backdrop_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_detail/movie_detail_bloc.dart';
@@ -48,6 +55,12 @@ Future init() async {
 
   getItInstance.registerLazySingleton<LanguageLocalDataSource>(
       () => LanguageLocalDataSourceImpl());
+
+  getItInstance.registerLazySingleton<AuthenticationRemoteDataSource>(
+      () => AuthenticationRemoteDataSourceImpl(getItInstance()));
+
+  getItInstance.registerLazySingleton<AuthenticationLocalDataSource>(
+      () => AuthenticationLocalDataSourceImpl());
 
   getItInstance
       .registerLazySingleton<GetTrending>(() => GetTrending(getItInstance()));
@@ -87,6 +100,12 @@ Future init() async {
   getItInstance.registerLazySingleton<GetPreferredLanguage>(
       () => GetPreferredLanguage(getItInstance()));
 
+  getItInstance.registerLazySingleton<LoginUser>(
+      () => LoginUser(getItInstance()));
+
+  getItInstance.registerLazySingleton<LogoutUser>(
+      () => LogoutUser(getItInstance()));
+
   getItInstance
       .registerLazySingleton<MovieRepository>(() => MovieRepositoryImpl(
             getItInstance(),
@@ -96,6 +115,12 @@ Future init() async {
   getItInstance.registerLazySingleton<AppRepository>(() => AppRepositoryImpl(
         getItInstance(),
       ));
+
+  getItInstance.registerLazySingleton<AuthenticationRepository>(
+    () => AuthenticationRepositoryImpl(
+            getItInstance(),
+            getItInstance(),
+          ));
 
   getItInstance.registerFactory(() => MovieBackdropBloc());
 
@@ -151,5 +176,10 @@ Future init() async {
         checkIfFavoriteMovie: getItInstance(),
         deleteFavoriteMovie: getItInstance(),
         getFavoriteMovies: getItInstance(),
+      ));
+
+  getItInstance.registerFactory(() => LoginBloc(
+        loginUser: getItInstance(),
+        logoutUser: getItInstance(),
       ));
 }
