@@ -8,7 +8,6 @@ import 'package:cinema/presentation/blocs/language/language_bloc.dart';
 import 'package:cinema/presentation/blocs/login/login_bloc.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_expanded_list_item.dart';
 import 'package:cinema/presentation/journeys/drawer/navigation_list_item.dart';
-import 'package:cinema/presentation/journeys/favorite/favorite_screen.dart';
 import 'package:cinema/presentation/widgets/app_dialog.dart';
 import 'package:cinema/presentation/widgets/logo.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +48,12 @@ class NavigationDrawer extends StatelessWidget{
               title: TranslationConstants.favoriteMovies.t(context) ,
               onPressed: () {
                 Navigator.of(context).pushNamed(RouteList.favorite);
+              },
+            ),
+            NavigationListItem(
+              title: TranslationConstants.myTickets.t(context),
+              onPressed: () {
+                Navigator.of(context).pushNamed(RouteList.myTickets);
               },
             ),
             NavigationExpandedListItem(

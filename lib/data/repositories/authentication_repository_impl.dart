@@ -50,12 +50,12 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
     final sessionId = await _authenticationRemoteDataSource
         .createSession(validateWithLoginToken.toJson());
 
-    if (sessionId != null) {
-      await _authenticationLocalDataSource.saveSessionId(sessionId);
-      return Right(true);
+    if (sessionId.isEmpty) {
+      return Left(AppError(AppErrorType.sessionDenied));
     }
-
-    return Left(AppError(AppErrorType.sessionDenied));
+    
+    await _authenticationLocalDataSource.saveSessionId(sessionId);
+    return Right(true);
   } on SocketException {
     return Left(AppError(AppErrorType.network));
   } on UnauthorisedException {

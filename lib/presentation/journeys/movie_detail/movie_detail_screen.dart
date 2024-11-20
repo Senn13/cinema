@@ -3,10 +3,12 @@ import 'package:cinema/common/constants/translation_constants.dart';
 import 'package:cinema/common/extensions/size_extensions.dart';
 import 'package:cinema/common/extensions/string_extensions.dart';
 import 'package:cinema/di/get_it.dart';
+import 'package:cinema/domain/entities/movie_entity.dart';
 import 'package:cinema/presentation/blocs/cast/cast_bloc.dart';
 import 'package:cinema/presentation/blocs/favorite/favorite_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_detail/movie_detail_bloc.dart';
 import 'package:cinema/presentation/blocs/videos/videos_bloc.dart';
+import 'package:cinema/presentation/journeys/booking/booking_screen.dart';
 import 'package:cinema/presentation/journeys/movie_detail/big_poster.dart';
 import 'package:cinema/presentation/journeys/movie_detail/cast_widget.dart';
 import 'package:cinema/presentation/journeys/movie_detail/movie_detail_arguments.dart';
@@ -98,6 +100,22 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                     CastWidget(),
                     VideosWidget(videosBloc: _videosBloc),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => BookingScreen(movie: MovieEntity(
+                              id: movieDetail.id,
+                              title: movieDetail.title,
+                              posterPath: movieDetail.posterPath,
+                              backdropPath: movieDetail.backdropPath,
+                            )),
+                          ),
+                        );
+                      },
+                      child: Text('Book Tickets'),
+                    ),
                   ],
                 ),
               );

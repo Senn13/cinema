@@ -3,12 +3,15 @@ import 'package:cinema/data/data_sources/authentication_remote_data_source.dart'
 import 'package:cinema/data/data_sources/language_local_data_source.dart';
 import 'package:cinema/data/data_sources/movie_local_data_source.dart';
 import 'package:cinema/data/data_sources/movie_remote_data_source.dart';
+import 'package:cinema/data/data_sources/booking_remote_data_source.dart';
 import 'package:cinema/data/repositories/app_repository_impl.dart';
 import 'package:cinema/data/repositories/authentication_repository_impl.dart';
 import 'package:cinema/data/repositories/movie_repository_impl.dart';
+import 'package:cinema/data/repositories/booking_repository_impl.dart';
 import 'package:cinema/domain/repositories/app_repository.dart';
 import 'package:cinema/domain/repositories/authentication_repository.dart';
 import 'package:cinema/domain/repositories/movie_repository.dart';
+import 'package:cinema/domain/repositories/booking_repository.dart';
 import 'package:cinema/domain/usecases/check_if_movie_favorite.dart';
 import 'package:cinema/domain/usecases/delete_favorite_movie.dart';
 import 'package:cinema/domain/usecases/get_cast.dart';
@@ -25,6 +28,9 @@ import 'package:cinema/domain/usecases/logout_user.dart';
 import 'package:cinema/domain/usecases/save_movie.dart';
 import 'package:cinema/domain/usecases/search_movies.dart';
 import 'package:cinema/domain/usecases/update_language.dart';
+import 'package:cinema/domain/usecases/get_showtime.dart';
+import 'package:cinema/domain/usecases/process_payment.dart';
+import 'package:cinema/domain/usecases/get_user_tickets.dart';
 import 'package:cinema/presentation/blocs/cast/cast_bloc.dart';
 import 'package:cinema/presentation/blocs/favorite/favorite_bloc.dart';
 import 'package:cinema/presentation/blocs/language/language_bloc.dart';
@@ -34,10 +40,15 @@ import 'package:cinema/presentation/blocs/movie_carousel/movie_carousel_bloc.dar
 import 'package:cinema/presentation/blocs/movie_detail/movie_detail_bloc.dart';
 import 'package:cinema/presentation/blocs/movie_tabbed/movie_tabbed_bloc.dart';
 import 'package:cinema/presentation/blocs/search_movie/search_movie_bloc.dart';
+import 'package:cinema/presentation/blocs/showtimes/showtimes_bloc.dart';
 import 'package:cinema/presentation/blocs/videos/videos_bloc.dart';
+import 'package:cinema/presentation/blocs/booking/booking_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:cinema/data/core/api_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cinema/data/data_sources/ticket_local_data_source.dart';
+
 
 final getItInstance = GetIt.I;
 
@@ -62,8 +73,16 @@ Future init() async {
   getItInstance.registerLazySingleton<AuthenticationLocalDataSource>(
       () => AuthenticationLocalDataSourceImpl());
 
-  getItInstance
-      .registerLazySingleton<GetTrending>(() => GetTrending(getItInstance()));
+
+  getItInstance.registerLazySingleton<BookingRemoteDataSource>(
+    () => BookingRemoteDataSourceImpl(getItInstance()),
+  );
+
+  getItInstance.registerLazySingleton<BookingRepository>(
+    () => BookingRepositoryImpl(getItInstance(), getItInstance()),
+  );
+
+  getItInstance.registerLazySingleton<GetTrending>(() => GetTrending(getItInstance()));
   getItInstance
       .registerLazySingleton<GetPopular>(() => GetPopular(getItInstance()));
   getItInstance.registerLazySingleton<GetPlayingNow>(
@@ -182,4 +201,37 @@ Future init() async {
         loginUser: getItInstance(),
         logoutUser: getItInstance(),
       ));
+
+  // getItInstance.registerFactory(
+  //   () => BookingBloc(
+  //     getShowtimes: getItInstance(),
+  //     processPayment: getItInstance(),
+  //   ),
+  // );
+
+  getItInstance.registerLazySingleton(() => GetShowtimes(getItInstance()));
+  getItInstance.registerLazySingleton(() => ProcessPayment(getItInstance()));
+
+  getItInstance.registerLazySingleton<GetUserTickets>(
+    () => GetUserTickets(getItInstance<BookingRepository>()),
+  );
+
+  // Add SharedPreferences instance
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getItInstance.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // Đăng ký ShowtimesBloc
+  getItInstance.registerFactory(
+    () => ShowtimesBloc(
+      remoteDataSource: getItInstance<BookingRemoteDataSource>(),
+    ),
+  );
+
+  getItInstance.registerLazySingleton<TicketLocalDataSource>(
+    () => TicketLocalDataSource(sharedPreferences),
+  );
+
+  getItInstance.registerFactory(
+    () => BookingBloc(getItInstance()),
+  );
 }

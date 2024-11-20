@@ -48,8 +48,14 @@ dependencies:
   path_provider: ^2.1.5
   wiredash: ^2.3.0
   youtube_player_flutter: ^9.1.1
+  qr_flutter: ^4.1.0
+  shared_preferences: ^2.2.2
   flutter_localizations:
     sdk: flutter
+  share_plus: ^7.2.1
+  pdf: ^3.10.7
+  sqflite: ^2.3.0
+  path: ^1.8.3
 
 dev_dependencies:
   hive_generator: ^2.0.1
