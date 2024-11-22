@@ -124,6 +124,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
             cardHolderName: paymentDetails.cardHolderName,
             movieTitle: booking.showtime.movieTitle,
             showtime: booking.showtime.toString(),
+            movieId: booking.showtime.movieId,
           ),
         );
       }

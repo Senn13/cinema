@@ -35,6 +35,7 @@ class _WatchVideoScreenState extends State<WatchVideoScreen> {
         mute: true,
       ),
     );
+    print('Watch Video Arguments: ${widget.watchVideoArguments.videos}');
   }
 
   @override
@@ -49,7 +50,9 @@ class _WatchVideoScreenState extends State<WatchVideoScreen> {
       appBar: AppBar(
         title: Text(
           TranslationConstants.watchTrailers.t(context),
+          style: const TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: YoutubePlayerBuilder(
         player: YoutubePlayer(

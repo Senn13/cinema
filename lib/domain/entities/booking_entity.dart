@@ -8,6 +8,7 @@ class BookingEntity extends Equatable {
   final double totalAmount;
   final String bookingStatus;
   final DateTime bookingTime;
+  final String showtime;
 
   const BookingEntity({
     required this.id,
@@ -17,6 +18,7 @@ class BookingEntity extends Equatable {
     required this.totalAmount,
     required this.bookingStatus,
     required this.bookingTime,
+    required this.showtime,
   });
 
   @override

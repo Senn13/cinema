@@ -19,9 +19,17 @@ class Routes {
         RouteList.movieDetail: (context) => MovieDetailScreen(
               movieDetailArguments: setting.arguments as MovieDetailArguments,
             ),
-        RouteList.watchTrailer: (context) => WatchVideoScreen(
-              watchVideoArguments: setting.arguments as WatchVideoArguments,
-            ),
+        RouteList.watchTrailer: (context) {
+          final args = setting.arguments as WatchVideoArguments?;
+          if (args == null) {
+            return const Scaffold(
+              body: Center(
+                child: Text('No video arguments provided'),
+              ),
+            );
+          }
+          return WatchVideoScreen(watchVideoArguments: args);
+        },
         RouteList.favorite: (context) => FavoriteScreen(),
         RouteList.myTickets: (context) => BlocProvider<BookingBloc>(
       create: (context) => getItInstance<BookingBloc>(),

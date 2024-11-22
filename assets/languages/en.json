@@ -78,5 +78,6 @@
     "invalidCvv": "Please enter a valid CVV",
     "invalidCardHolderName": "Please enter the card holder name",
     "pay": "Pay",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "booked": "Booked"
 }

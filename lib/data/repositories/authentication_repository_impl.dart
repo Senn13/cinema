@@ -68,12 +68,24 @@ class AuthenticationRepositoryImpl extends AuthenticationRepository {
 
   @override
   Future<Either<AppError, void>> logoutUser() async {
-    final sessionId = await _authenticationLocalDataSource.getSessionId();
-    await Future.wait([
-      _authenticationRemoteDataSource.deleteSession(sessionId),
-      _authenticationLocalDataSource.deleteSessionId(),
-    ]);
-    print(await _authenticationLocalDataSource.getSessionId());
-    return Right(Unit);
+    try {
+      final sessionId = await _authenticationLocalDataSource.getSessionId();
+      
+      if (sessionId != null) {
+        try {
+          await _authenticationRemoteDataSource.deleteSession(sessionId);
+        } catch (e) {
+          print('Error deleting remote session: $e');
+          // Continue to delete local session even if remote fails
+        }
+      }
+      
+      await _authenticationLocalDataSource.deleteSessionId();
+      return const Right(unit);
+      
+    } catch (e) {
+      print('Logout error: $e');
+      return Left(AppError(AppErrorType.database));
+    }
   }
 }

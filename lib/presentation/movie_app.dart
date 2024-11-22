@@ -21,20 +21,17 @@ class MovieApp extends StatefulWidget {
 
 class _MovieAppState extends State<MovieApp> {
   late LanguageBloc _languageBloc;
-  late LoginBloc _loginBloc;
 
   @override
   void initState() {
     super.initState();
     _languageBloc = getItInstance<LanguageBloc>();
     _languageBloc.add(LoadPreferredLanguageEvent());
-    _loginBloc = getItInstance<LoginBloc>();
   }
 
   @override
   void dispose() {
-    _languageBloc?.close();
-    _loginBloc?.close();
+    _languageBloc.close();
     super.dispose();
   }
 
@@ -46,8 +43,8 @@ class _MovieAppState extends State<MovieApp> {
         BlocProvider<LanguageBloc>.value(
           value: _languageBloc,
         ),
-        BlocProvider<LoginBloc>.value(
-          value: _loginBloc,
+        BlocProvider<LoginBloc>(
+          create: (context) => getItInstance<LoginBloc>(),
         ),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(

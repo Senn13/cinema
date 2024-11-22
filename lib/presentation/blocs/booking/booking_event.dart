@@ -66,6 +66,7 @@ class ProcessPaymentEvent extends BookingEvent {
   final String expiryDate;
   final String cvv;
   final String cardHolderName;
+  final int movieId;
 
   const ProcessPaymentEvent({
     required this.bookingId,
@@ -79,6 +80,7 @@ class ProcessPaymentEvent extends BookingEvent {
     required this.expiryDate,
     required this.cvv,
     required this.cardHolderName,
+    required this.movieId,
   });
 
   @override
@@ -94,6 +96,7 @@ class ProcessPaymentEvent extends BookingEvent {
     expiryDate,
     cvv,
     cardHolderName,
+    movieId,
   ];
 }
 

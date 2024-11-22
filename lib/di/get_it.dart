@@ -48,6 +48,7 @@ import 'package:http/http.dart';
 import 'package:cinema/data/core/api_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cinema/data/data_sources/ticket_local_data_source.dart';
+import 'package:cinema/data/data_sources/seat_booking_local_data_source.dart';
 
 
 final getItInstance = GetIt.I;
@@ -71,7 +72,7 @@ Future init() async {
       () => AuthenticationRemoteDataSourceImpl(getItInstance()));
 
   getItInstance.registerLazySingleton<AuthenticationLocalDataSource>(
-      () => AuthenticationLocalDataSourceImpl());
+      () => AuthenticationLocalDataSourceImpl(getItInstance()));
 
 
   getItInstance.registerLazySingleton<BookingRemoteDataSource>(
@@ -190,6 +191,9 @@ Future init() async {
     getPreferredLanguage: getItInstance(),
   ));
 
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getItInstance.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
   getItInstance.registerFactory(() => FavoriteBloc(
         saveMovie: getItInstance(),
         checkIfFavoriteMovie: getItInstance(),
@@ -197,10 +201,12 @@ Future init() async {
         getFavoriteMovies: getItInstance(),
       ));
 
-  getItInstance.registerFactory(() => LoginBloc(
-        loginUser: getItInstance(),
-        logoutUser: getItInstance(),
-      ));
+  getItInstance.registerFactory(
+    () => LoginBloc(
+      loginUser: getItInstance(),
+      logoutUser: getItInstance(),
+    ),
+  );
 
   // getItInstance.registerFactory(
   //   () => BookingBloc(
@@ -217,8 +223,6 @@ Future init() async {
   );
 
   // Add SharedPreferences instance
-  final sharedPreferences = await SharedPreferences.getInstance();
-  getItInstance.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // Đăng ký ShowtimesBloc
   getItInstance.registerFactory(
@@ -232,6 +236,16 @@ Future init() async {
   );
 
   getItInstance.registerFactory(
-    () => BookingBloc(getItInstance()),
+    () => BookingBloc(
+      getItInstance<TicketLocalDataSource>(),
+      getItInstance<BookingRemoteDataSource>(),
+    ),
+  );
+
+  getItInstance.registerLazySingleton<SeatBookingLocalDataSource>(
+    () => SeatBookingLocalDataSource(
+      getItInstance<SharedPreferences>(),
+      getItInstance<TicketLocalDataSource>(),
+    ),
   );
 }

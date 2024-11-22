@@ -21,12 +21,18 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
     VideosEvent event,
   ) async* {
     if (event is LoadVideosEvent) {
-      final Either<AppError, List<VideoEntity>> eitherVideoResponse =
+      final Either<AppError, List<VideoEntity>> videosEither =
           await getVideos(MovieParams(event.movieId));
 
-      yield eitherVideoResponse.fold(
-        (l) => NoVideos(),
-        (r) => VideosLoaded(r),
+      yield videosEither.fold(
+        (l) {
+          print('Videos Error: $l');
+          return NoVideos();
+        },
+        (videos) {
+          print('Videos Loaded: ${videos.length}');
+          return VideosLoaded(videos);
+        },
       );
     }
   }

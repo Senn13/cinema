@@ -10,6 +10,8 @@ class TicketEntity extends Equatable {
   final String qrCode;
   final DateTime bookingTime;
   final String? status;
+  final int showtimeId;
+  final int movieId;
 
   const TicketEntity({
     required this.id,
@@ -20,6 +22,8 @@ class TicketEntity extends Equatable {
     required this.confirmationCode,
     required this.qrCode,
     required this.bookingTime,
+    required this.showtimeId,
+    required this.movieId,
     this.status,
   });
 
@@ -34,5 +38,7 @@ class TicketEntity extends Equatable {
     qrCode,
     bookingTime,
     status ?? '',
+    showtimeId,
+    movieId,
   ];
 }

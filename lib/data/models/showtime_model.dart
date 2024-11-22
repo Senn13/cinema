@@ -6,7 +6,7 @@ class ShowtimeModel extends Equatable {
   final String movieTitle;
   final String posterPath;
   final DateTime showDate;
-  final List<String> times;
+  final String time;
   final double price;
   final String screenType;
 
@@ -16,7 +16,7 @@ class ShowtimeModel extends Equatable {
     required this.movieTitle,
     required this.posterPath,
     required this.showDate,
-    required this.times,
+    required this.time,
     required this.price,
     required this.screenType,
   });
@@ -28,7 +28,7 @@ class ShowtimeModel extends Equatable {
         movieTitle,
         posterPath,
         showDate,
-        times,
+        time,
         price,
         screenType,
       ];
@@ -40,7 +40,7 @@ class ShowtimeModel extends Equatable {
       movieTitle: json['movieTitle'] as String,
       posterPath: json['posterPath'] as String,
       showDate: DateTime.parse(json['showDate'] as String),
-      times: List<String>.from(json['times'] as List),
+      time: json['time'] as String,
       price: (json['price'] as num).toDouble(),
       screenType: json['screenType'] as String,
     );
@@ -53,7 +53,7 @@ class ShowtimeModel extends Equatable {
       'movieTitle': movieTitle,
       'posterPath': posterPath,
       'showDate': showDate.toIso8601String(),
-      'times': times,
+      'time': time,
       'price': price,
       'screenType': screenType,
     };

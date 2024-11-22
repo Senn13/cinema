@@ -78,5 +78,6 @@
     "invalidCvv": "Vui lòng nhập mã CVV hợp lệ",
     "invalidCardHolderName": "Vui lòng nhập tên chủ thẻ",
     "pay": "Thanh Toán",
-    "backToHome": "Trở về Trang Chủ"
+    "backToHome": "Trở về Trang Chủ",
+    "booked": "Đã đặt"
 }

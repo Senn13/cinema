@@ -78,5 +78,6 @@
     "invalidCvv": "Ingrese un CVV válido",
     "invalidCardHolderName": "Ingrese el nombre del titular de la tarjeta",
     "pay": "Pagar",
-    "backToHome": "Volver a Inicio"
+    "backToHome": "Volver a Inicio",
+    "booked": "Reservado"
 }

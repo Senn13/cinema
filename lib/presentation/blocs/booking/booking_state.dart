@@ -13,6 +13,8 @@ class BookingLoading extends BookingState {}
 
 class PaymentProcessing extends BookingState {}
 
+class CancellationProcessing extends BookingState {}
+
 class PaymentCompleted extends BookingState {
   final TicketModel ticket;
 
@@ -21,6 +23,19 @@ class PaymentCompleted extends BookingState {
   @override
   List<Object> get props => [ticket];
 }
+
+class TicketsLoading extends BookingState {}
+
+class TicketsLoaded extends BookingState {
+  final List<TicketModel> tickets;
+
+  const TicketsLoaded({required this.tickets});
+
+  @override
+  List<Object> get props => [tickets];
+}
+
+class TicketsEmpty extends BookingState {}
 
 class BookingError extends BookingState {
   final String message;
@@ -31,20 +46,14 @@ class BookingError extends BookingState {
   List<Object> get props => [message];
 }
 
-class TicketsState extends BookingState {}
+class CancellationCompleted extends BookingState {
+  final TicketModel ticket;
 
-class TicketsLoading extends TicketsState {}
-
-class TicketsLoaded extends TicketsState {
-  final List<TicketModel> tickets;
-
-  TicketsLoaded({required this.tickets});
+  const CancellationCompleted({required this.ticket});
 
   @override
-  List<Object> get props => [tickets];
+  List<Object> get props => [ticket];
 }
-
-class TicketsEmpty extends TicketsState {}
 
 class ShowtimesLoaded extends BookingState {
   final List<ShowtimeModel> showtimes;

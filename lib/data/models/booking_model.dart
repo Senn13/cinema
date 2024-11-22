@@ -9,6 +9,7 @@ class BookingModel extends BookingEntity {
     required double totalAmount,
     required String bookingStatus,
     required DateTime bookingTime,
+    required String showtime,
   }) : super(
           id: id,
           showtimeId: showtimeId,
@@ -17,6 +18,7 @@ class BookingModel extends BookingEntity {
           totalAmount: totalAmount,
           bookingStatus: bookingStatus,
           bookingTime: bookingTime,
+          showtime: showtime,
         );
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +30,7 @@ class BookingModel extends BookingEntity {
       totalAmount: json['totalAmount'],
       bookingStatus: json['bookingStatus'],
       bookingTime: DateTime.parse(json['bookingTime']),
+      showtime: json['showtime'],
     );
   }
 }

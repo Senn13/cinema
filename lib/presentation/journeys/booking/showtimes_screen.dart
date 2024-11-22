@@ -1,3 +1,4 @@
+import 'package:cinema/presentation/theme/theme_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -21,13 +22,17 @@ class ShowtimesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Group showtimes by date
     final Map<DateTime, List<ShowtimeModel>> showtimesByDate = {};
     for (var showtime in showtimes) {
-      if (!showtimesByDate.containsKey(showtime.showDate)) {
-        showtimesByDate[showtime.showDate] = [];
+      final date = DateTime(
+        showtime.showDate.year,
+        showtime.showDate.month,
+        showtime.showDate.day,
+      );
+      if (!showtimesByDate.containsKey(date)) {
+        showtimesByDate[date] = [];
       }
-      showtimesByDate[showtime.showDate]!.add(showtime);
+      showtimesByDate[date]!.add(showtime);
     }
 
     return Scaffold(
@@ -44,45 +49,72 @@ class ShowtimesScreen extends StatelessWidget {
           final date = showtimesByDate.keys.elementAt(index);
           final dateShowtimes = showtimesByDate[date]!;
           
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  _formatDate(date),
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              ...dateShowtimes.map((showtime) => Card(
-                margin: EdgeInsets.only(bottom: 8.0),
-                child: ListTile(
-                  title: Text(
-                    '${showtime.screenType} - \$${showtime.price.toStringAsFixed(2)}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          dateShowtimes.sort((a, b) => a.time.compareTo(b.time));
+          
+          return Card(
+            margin: const EdgeInsets.only(bottom: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Text(
+                    _formatDate(date),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Colors.black,
                     ),
                   ),
-                  subtitle: Wrap(
-                    spacing: 8.0,
-                    children: showtime.times.map((time) => 
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                        ),
-                        onPressed: () => onShowtimeSelect(showtime),
-                        child: Text(
-                          time,
-                          style: TextStyle(color: Colors.black),
+                ),
+                const Divider(height: 1),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        dateShowtimes.first.screenType,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Colors.black87,
                         ),
                       ),
-                    ).toList(),
+                      const SizedBox(height: 8),
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        children: dateShowtimes.map((showtime) => 
+                          SizedBox(
+                            width: 80, // Chiều rộng cố định cho mỗi nút
+                            height: 36, // Chiều cao cố định cho mỗi nút
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                backgroundColor: Colors.white,
+                                side: const BorderSide(color: AppColor.royalBlue),
+                              ),
+                              onPressed: () => onShowtimeSelect(showtime),
+                              child: Text(
+                                showtime.time,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ).toList(),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Price: \$${dateShowtimes.first.price.toStringAsFixed(2)}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              )),
-            ],
+              ],
+            ),
           );
         },
       ),
@@ -90,16 +122,6 @@ class ShowtimesScreen extends StatelessWidget {
   }
 
   String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    if (date.year == now.year && 
-        date.month == now.month && 
-        date.day == now.day) {
-      return 'Today';
-    } else if (date.year == now.year && 
-               date.month == now.month && 
-               date.day == now.day + 1) {
-      return 'Tomorrow';
-    }
-    return DateFormat('EEE, MMM d').format(date);
+    return DateFormat('EEEE, dd/MM/yyyy').format(date);
   }
 }

@@ -1,30 +1,33 @@
-import 'package:cinema/data/models/booking_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cinema/common/constants/translation_constants.dart';
 import 'package:cinema/common/extensions/string_extensions.dart';
+import 'package:cinema/data/models/booking_model.dart';
+import 'package:cinema/di/get_it.dart';
+import 'package:cinema/domain/entities/movie_entity.dart';
 import 'package:cinema/presentation/blocs/booking/booking_bloc.dart';
 import 'package:cinema/presentation/journeys/tickets/ticket_confirmation_screen.dart';
 import 'package:cinema/presentation/theme/theme_color.dart';
 import 'package:cinema/presentation/journeys/payment/payment_form.dart';
+import 'package:cinema/data/data_sources/seat_booking_local_data_source.dart';
 
 class PaymentScreen extends StatefulWidget {
-  final int bookingId;
-  final int showtimeId;
-  final int userId;
-  final String movieTitle;
-  final String showtime;
   final List<String> selectedSeats;
+  final int showtimeId;
+  final String showtime;
+  final double price;
+  final MovieEntity movie;
+  final int bookingId;
   final double totalAmount;
 
   const PaymentScreen({
     Key? key,
-    required this.bookingId,
-    required this.showtimeId,
-    required this.userId,
-    required this.movieTitle,
-    required this.showtime,
     required this.selectedSeats,
+    required this.showtimeId,
+    required this.showtime,
+    required this.price,
+    required this.movie,
+    required this.bookingId,
     required this.totalAmount,
   }) : super(key: key);
 
@@ -65,15 +68,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             );
           } else if (state is PaymentCompleted) {
-            Navigator.of(context).pop(); // Đóng loading dialog
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TicketConfirmationScreen(
-                  ticket: state.ticket,
+            final seatBookingLocalDataSource = getItInstance<SeatBookingLocalDataSource>();
+            print('Saving seats for showtime: ${widget.showtimeId}');
+            seatBookingLocalDataSource.saveBookedSeats(
+              widget.selectedSeats,
+              widget.showtimeId,
+              widget.showtime,
+              widget.movie.id,
+            ).then((_) {
+              Navigator.of(context).pop();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TicketConfirmationScreen(
+                    ticket: state.ticket,
+                  ),
                 ),
-              ),
-            );
+              );
+            });
           } else if (state is BookingError) {
             if (Navigator.canPop(context)) {
               Navigator.of(context).pop(); // Đóng loading dialog nếu đang hiển thị
@@ -127,12 +139,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _processPayment() {
     if (_formKey.currentState?.validate() ?? false) {
-      context.read<BookingBloc>().add(
+      final booking = BookingModel(
+        showtime: widget.showtime,
+        id: widget.bookingId,
+        showtimeId: widget.showtimeId,
+        userId: 1,
+        selectedSeats: widget.selectedSeats,
+        bookingStatus: 'pending',
+        bookingTime: DateTime.now(),
+        totalAmount: widget.totalAmount,
+      );
+
+      final bookingBloc = BlocProvider.of<BookingBloc>(context);
+      bookingBloc.add(
         ProcessPaymentEvent(
+          movieId: widget.movie.id,
           bookingId: widget.bookingId,
           showtimeId: widget.showtimeId,
-          userId: widget.userId,
-          movieTitle: widget.movieTitle,
+          userId: 1,
+          movieTitle: widget.movie.title,
           showtime: widget.showtime,
           selectedSeats: widget.selectedSeats,
           totalAmount: widget.totalAmount,

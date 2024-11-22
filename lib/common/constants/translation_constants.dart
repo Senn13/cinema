@@ -52,6 +52,7 @@ class TranslationConstants {
   static const String available = 'available';
   static const String taken = 'taken';
   static const String selected = 'selected';
+  static const String booked = 'booked';
   static const String screenType = 'screenType';
   static const String standardScreen = 'standardScreen';
   static const String premiumScreen = 'premiumScreen';

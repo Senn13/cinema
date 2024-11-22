@@ -7,6 +7,7 @@ import 'package:cinema/presentation/blocs/showtimes/showtimes_event.dart';
 import 'package:cinema/presentation/blocs/showtimes/showtimes_state.dart';
 import 'package:cinema/presentation/journeys/booking/seat_selection_screen.dart';
 import 'package:cinema/presentation/journeys/booking/showtimes_screen.dart';
+import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
   final MovieEntity movie;
@@ -50,6 +51,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     MaterialPageRoute(
                       builder: (context) => SeatSelectionScreen(
                         showtimeId: showtime.id,
+                        showtime: '${DateFormat('yyyy-MM-dd').format(showtime.showDate)} ${showtime.time}',
                         price: showtime.price,
                         movie: widget.movie,
                       ),

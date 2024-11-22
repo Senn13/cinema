@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:cinema/data/core/api_client.dart';
 import 'package:cinema/data/models/showtime_model.dart';
 import 'package:cinema/data/models/booking_model.dart';
 import 'package:cinema/data/models/ticket_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class BookingRemoteDataSource {
   Future<List<ShowtimeModel>> getShowtimes(int movieId);
@@ -26,50 +29,46 @@ class BookingRemoteDataSourceImpl extends BookingRemoteDataSource {
   @override
   Future<List<ShowtimeModel>> getShowtimes(int movieId) async {
     try {
-      final response = await _client.get(
-        'movie/$movieId',
-        params: {
-          'append_to_response': 'release_dates',
-        },
-      );
-
-      final movieTitle = response['title'] as String;
-      final posterPath = response['poster_path'] as String?;
-
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      final now = DateTime.now();
       final List<ShowtimeModel> showtimes = [];
-      final standardTimes = ['10:30', '13:00', '15:30', '18:00', '20:30'];
-
-      for (int day = 0; day < 7; day++) {
-        final date = DateTime.now().add(Duration(days: day));
+      
+      // Tạo 3 ngày chiếu khác nhau
+      for (int day = 0; day < 3; day++) {
+        final showDate = DateTime(now.year, now.month, now.day + day);
         
-        showtimes.add(
-          ShowtimeModel(
-            id: DateTime.now().millisecondsSinceEpoch + day,
-            movieId: movieId,
-            movieTitle: movieTitle,
-            posterPath: posterPath ?? '',
-            times: standardTimes,
-            screenType: '2D',
-            price: 10.0,
-            showDate: date,
-          ),
-        );
+        // Tạo các suất chiếu riêng biệt
+        for (int hour in [10, 13, 16, 19, 22]) {
+          // Tạo ID duy nhất cho mỗi suất chiếu
+          final showtimeId = int.parse('$movieId${showDate.day}$hour');
+          
+          // Tạo thời gian chiếu dạng "HH:mm"
+          final timeString = '${hour.toString().padLeft(2, '0')}:00';
 
-        if (day % 2 == 0) {
-          final eveningTimes = ['18:30', '21:00'];
-          showtimes.add(
-            ShowtimeModel(
-              id: DateTime.now().millisecondsSinceEpoch + day + 100,
-              movieId: movieId,
-              movieTitle: movieTitle,
-              posterPath: posterPath ?? '',
-              times: eveningTimes,
-              screenType: '3D',
-              price: 15.0,
-              showDate: date,
-            ),
-          );
+          showtimes.add(ShowtimeModel(
+            id: showtimeId,
+            movieId: movieId,
+            movieTitle: 'Movie $movieId',
+            posterPath: '/path/to/poster',
+            showDate: showDate,
+            time: timeString,
+            price: 75000.0 + (hour - 10) * 5000, // Giá thay đổi theo giờ
+            screenType: hour % 2 == 0 ? '2D' : '3D',
+          ));
         }
+      }
+
+      // Sắp xếp theo ngày và giờ
+      showtimes.sort((a, b) {
+        int dateCompare = a.showDate.compareTo(b.showDate);
+        if (dateCompare != 0) return dateCompare;
+        return a.time.compareTo(b.time);
+      });
+
+      print('Generated showtimes:');
+      for (var showtime in showtimes) {
+        print('ID: ${showtime.id}, Date: ${showtime.showDate}, Time: ${showtime.time}');
       }
 
       return showtimes;
@@ -85,6 +84,7 @@ class BookingRemoteDataSourceImpl extends BookingRemoteDataSource {
       await Future.delayed(const Duration(seconds: 1));
       
       return BookingModel(
+        showtime: booking.showtime,
         id: DateTime.now().millisecondsSinceEpoch,
         showtimeId: booking.showtimeId,
         userId: booking.userId,
@@ -131,6 +131,8 @@ class BookingRemoteDataSourceImpl extends BookingRemoteDataSource {
       
       return [
         TicketModel(
+          showtimeId: 1,
+          movieId: 1,
           id: 1,
           movieTitle: "Test Movie",
           showtime: "14:30 - ${DateTime.now().toString().split(' ')[0]}",

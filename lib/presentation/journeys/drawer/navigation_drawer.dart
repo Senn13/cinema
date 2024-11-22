@@ -88,6 +88,14 @@ class NavigationDrawer extends StatelessWidget{
               child: NavigationListItem(
                 title: TranslationConstants.logout.t(context),
                 onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                  
                   BlocProvider.of<LoginBloc>(context).add(LogoutEvent());
                 },
               ),

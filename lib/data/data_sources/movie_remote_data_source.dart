@@ -1,4 +1,3 @@
-
 import 'package:cinema/data/core/api_client.dart';
 import 'package:cinema/data/models/cast_crew_result_data_model.dart';
 import 'package:cinema/data/models/movie_detail_model.dart';
@@ -72,10 +71,16 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
   
   @override
   Future<List<VideoModel>> getVideos(int id) async {
-    final response = await _client.get('movie/$id/videos');
-    final videos = VideoResultModel.fromJson(response).videos;
-    print(videos);
-    return videos ?? [];
+    try {
+      final response = await _client.get('movie/$id/videos');
+      print('API Response: $response');
+      final videos = VideoResultModel.fromJson(response).videos;
+      print('Parsed Videos: $videos');
+      return videos ?? [];
+    } catch (e) {
+      print('Error fetching videos: $e');
+      throw Exception('Failed to load videos');
+    }
   }
   
   @override
